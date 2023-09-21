@@ -5,11 +5,11 @@
 
     @section('content')
 
-    <section class = "grid grid-cols-3 container max-w-full h-full p-5 bg-gray-50 gap-5">
+    <section class = "grid grid-cols-3 container max-w-full p-5 bg-gray-50 gap-5">
         @if(count($lecturers) > 0)
             @foreach($lecturers as $lecturer)
                 @foreach($lecturer->modules as $module)
-                <a href="/moduleview/{{$module->modulecode}}">
+                <a href="/moduleview/{{$module->modulecode}}" class = "block">
                     <div class = "bg-green-400 h-48 text-white rounded-sm p-2 cursor-pointer hover:bg-green-500 transition-all">
                         <div class="flex gap-1 items-center">
                             <x-heroicon-o-book-open class="w-10"/>

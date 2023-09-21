@@ -14,7 +14,7 @@
             <div class = "flex flex-1">
                 <a href="/student/update/image/{{auth('student')->user()->regno}}">
                     @if(auth('student')->user()->image)
-                        <img src="{{asset('/images/profile/'.auth('student')->user()->image)}}" alt="" class = "h-32 w-32 rounded-full relative" alt="profile image">
+                        <img src="{{asset('/images/profile/'.auth('student')->user()->image)}}" alt="" class = "h-48 w-48 rounded-full relative" alt="profile image">
                     @else
                         <img src="{{asset('/images/profile/profile-default-sm.png')}}" alt="" class = "h-32 w-32 rounded-sm" alt="default">
                     @endif
@@ -36,14 +36,16 @@
                     </button>
                 </a>
                 <a href="/student/update/image/{{ auth('student')->user()->regno }}" class="block">
-                    <button class="w-full p-2 rounded-md hover:text-green-500 hover:bg-green-100 text-center transition-all">
+                    <button class="w-full flex gap-1 items-center p-2 rounded-md hover:text-green-500 hover:bg-green-100 text-center transition-all">
+                        <i class="fa-solid fa-image"></i>
                         Update Image
                     </button>
                 </a>
                 <form action="/student/update/image/{{ auth('student')->user()->regno }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="w-full p-2 rounded-md hover:text-green-500 hover:bg-green-100 text-center transition-all">
+                    <button type="submit" class="w-full flex gap-1 items-center p-2 rounded-md hover:text-green-500 hover:bg-green-100 text-center transition-all">
+                        <i class="fa-solid fa-circle-minus"></i>
                         Remove Image
                     </button>
                 </form>

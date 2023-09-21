@@ -30,7 +30,8 @@ Route::prefix('admin')->group(function(){
         return view('admin.login');
     });
     Route::get('/addModule', function(){
-        return view('admin.addModule');
+        $lecturers = Lecturer::all();
+        return view('admin.addModule',['lecturers' => $lecturers]);
     });
     Route::get('/addLecturer', function(){
         return view('admin.addLecturer');

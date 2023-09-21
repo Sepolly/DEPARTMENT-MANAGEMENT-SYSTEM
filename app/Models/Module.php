@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Module extends Model
 {
     use HasFactory;
-    protected $fillable = ['modulecode','modulename','lecturer_id','level'];
+    protected $fillable = ['module_code','module_name','lecturer_id','level'];
 
     //customizing primary key
-    protected $primaryKey = 'modulecode';
+    protected $primaryKey = 'module_code';
     protected $keyType = 'string';
     public $incrementing = false;
 

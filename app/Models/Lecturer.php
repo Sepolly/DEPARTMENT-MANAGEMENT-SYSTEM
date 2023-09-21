@@ -10,8 +10,8 @@ class Lecturer extends Model
     use HasFactory;
     protected $fillable = [
         'id',
-        'firstname',
-        'lastname',
+        'first_name',
+        'last_name',
         'usertype',
         'phone',
         'address',

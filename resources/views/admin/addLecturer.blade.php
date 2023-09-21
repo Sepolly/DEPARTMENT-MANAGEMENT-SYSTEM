@@ -24,13 +24,13 @@
         <div>
             <label class="block text-gray-700 text-sm font-bold mb-2" for="fname">
             first name
-            <input  name = "firstname" class="appearance-none bg-gray-100 rounded w-full h-12 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100"  type="text" placeholder="first name" autocomplete="off">
+            <input  name = "first_name" class="appearance-none bg-gray-100 rounded w-full h-12 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100"  type="text" placeholder="first name" autocomplete="off">
             </label>
         </div>
         <div>
             <label class="block text-gray-700 text-sm font-bold mb-2" for="fname">
             last name
-            <input  name = "lastname" class="appearance-none bg-gray-100 rounded w-full h-12 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100"  type="text" placeholder="last name" autocomplete="off">
+            <input  name = "last_name" class="appearance-none bg-gray-100 rounded w-full h-12 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100"  type="text" placeholder="last name" autocomplete="off">
             </label>
         </div>
         <div>

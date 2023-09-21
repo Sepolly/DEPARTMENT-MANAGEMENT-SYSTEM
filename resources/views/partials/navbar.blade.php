@@ -9,8 +9,8 @@
             @endif
         </a>
         <p class="text-lg flex">
-            {{ auth('student')->user()->firstname }}
-            {{ auth('student')->user()->lastname }}
+            {{ auth('student')->user()->first_name }}
+            {{ auth('student')->user()->last_name }}
         </p>
     </span>
     @endif

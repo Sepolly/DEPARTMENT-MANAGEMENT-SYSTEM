@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('modules', function (Blueprint $table) {
-            $table->string("module_code")->unique();
-            $table->string("module_name");
-            $table->string("lecturer_id");
-            $table->integer("level");
+        Schema::create('timetables', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('image')->nullable();
+            $table->string('file');
+            $table->boolean('published')->default(false);
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('modules');
+        Schema::dropIfExists('timetables');
     }
 };

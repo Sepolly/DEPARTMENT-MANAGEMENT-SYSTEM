@@ -14,8 +14,8 @@
                         <div class="flex gap-1 items-center">
                             <x-heroicon-o-book-open class="w-10"/>
                             <h2 class = "font-bold text-2xl gap-2">
-                                {{$module->modulecode . " "}}
-                                {{$module->modulename}}
+                                {{$module->module_code . " "}}
+                                {{$module->module_name}}
                             </h2>
                         </div>
                 @endforeach
@@ -23,7 +23,7 @@
                         <i class="fa-solid fa-chalkboard-user"></i>
                         <h6 class = "text-gray-100 text-lg">                     
                             {{$lecturer->title . " "}}
-                            {{$lecturer->firstname . " "}}{{$lecturer->lastname}}
+                            {{$lecturer->first_name . " "}}{{$lecturer->last_name}}
                         </h6>
                     </div>
                 </div>

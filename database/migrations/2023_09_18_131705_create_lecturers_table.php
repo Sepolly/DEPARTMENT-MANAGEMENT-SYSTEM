@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("first_name");
             $table->string("last_name");
             $table->string("usertype")->default('lecturer');
+            $table->boolean("is_admin")->default(false);
             $table->string("title")->nullable();
             $table->string("email");
             $table->string("address")->nullable();

@@ -13,6 +13,7 @@ class Lecturer extends Model
         'first_name',
         'last_name',
         'usertype',
+        'is_admin',
         'phone',
         'address',
         'title',

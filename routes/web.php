@@ -20,14 +20,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 // ADMIN ROUTES
+Route::get('/admin/login', [AdminController::class,'showLogin']);
+Route::post('/admin/login',[AdminController::class,'login']);
+
 Route::prefix('admin')->group(function(){
-    Route::get('/', [AdminController::class,'dashboard']);
+    
+    Route::get('/admin/makeadmin',[AdminController::class,'showMakeAdmin']);
+    Route::get('/', [AdminController::class,'dashboard'])->name('admin.dashboard');
     
     Route::get('/addStudent', function(){
         return view('admin.addStudent');
-    });
-    Route::get('/login', function(){
-        return view('admin.login');
     });
     Route::get('/addModule', function(){
         $lecturers = Lecturer::all();
@@ -37,21 +39,24 @@ Route::prefix('admin')->group(function(){
         return view('admin.addLecturer');
     });
     
+    Route::post('/admin/makeadmin',[AdminController::class,'makeAdmin']);
     Route::post('/addLecturer',[AdminController::class,'addLecturer']);
     Route::post('/addModule',[AdminController::class,'addModule']);
     Route::post('/addStudent',[AdminController::class,'addStudent']);
-    Route::post('/login',[AdminController::class,'login']);
+
 });
 
 
 
 
 // STUDENT ROUTES
-Route::prefix('student')->group(function(){
+Route::get('/student/login',[StudentController::class,'showLoginForm'])->name('login');
+Route::post('/student/login',[StudentController::class,'login']);
 
+Route::middleware(['student'])->prefix('student')->group(function(){
+    
     // GET REQUESTS
     Route::get('/', [StudentController::class,'index'])->name('student.home');
-    Route::get('/login',[StudentController::class,'showLoginForm']);
     Route::get('/profile/{regno}',[StudentController::class,'showProfile']);
     Route::get('/logout',[StudentController::class,'logout']);
     Route::get('/update/password/{regno}',[StudentController::class,'showPasswordUpdateForm']);
@@ -59,8 +64,9 @@ Route::prefix('student')->group(function(){
     Route::delete('/update/image/{regno}',[StudentController::class,'deleteImage']);
 
     // POST REQUESTS
-    Route::post('/login',[StudentController::class,'login']);
     Route::post('/update/password/{regno}',[StudentController::class,'updatePassword']);
     Route::post('/update/image/{regno}',[StudentController::class,'updateImage']);
-
+    
 });
+
+

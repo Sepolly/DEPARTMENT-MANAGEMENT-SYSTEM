@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="flex items-center justify-center w-full h-full bg-blue-100">
-        <form action = "/login" method = "POST" class="flex flex-col justify-around bg-white shadow-md rounded w-1/4 h-1/2 px-8 pt-10 pb-8 mb-4">
+        <form action = "/admin/login" method = "POST" class="flex flex-col justify-around bg-white shadow-md rounded w-1/4 h-1/2 px-8 pt-10 pb-8 mb-4">
             @csrf
             <div class = "text-center text-lg font-bold">
                 ADMIN
@@ -39,7 +39,7 @@
             </label>
             <input name = "password" class="appearance-none bg-gray-100 rounded w-full h-12 py-2 px-3 text-gray-700 leading-tight focus:outline-blue-100" id="password" type="password" placeholder="password">
             @if($errors)
-                @error('loginpassword')
+                @error('password')
                 <p class = "text-red-400">
                     {{$message}}
                 </p>

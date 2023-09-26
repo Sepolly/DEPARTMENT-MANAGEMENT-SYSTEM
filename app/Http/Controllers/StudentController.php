@@ -14,11 +14,11 @@ class StudentController extends Controller
 {
 
     public function index(){
-       if(auth('student')->check()){
-            $lecturers = Lecturer::with('modules')->get();
-            return view('student.home',['lecturers'=>$lecturers]);
-       }
-       return redirect('/student/login');
+        // $lecturers = Lecturer::with('modules')->get();
+        $student_level = auth('student')->user()->level;
+        $modules = Module::where('level', $student_level)->get();
+        // dd($modules);
+        return view('student.home',['modules'=>$modules]);
     }
 
     public function showLoginForm(){
@@ -65,6 +65,7 @@ class StudentController extends Controller
         $fields = $request->validate([
             'image'=>'required|image|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
+        
         $student = Student::findOrfail($regno);
         $image = time().".".$request->image->extension();
         $request->image->move(public_path('images/profile'), $image);

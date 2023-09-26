@@ -16,6 +16,6 @@ class Module extends Model
     public $incrementing = false;
 
     public function lecturer(){
-        $this->belongsTo(Lecturer::class);
+        return $this->belongsTo(Lecturer::class);
     }
 }

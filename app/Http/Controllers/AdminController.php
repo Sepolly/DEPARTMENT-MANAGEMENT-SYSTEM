@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\Module;
 use App\Models\Lecturer;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -102,19 +103,43 @@ class AdminController extends Controller
         return back()->with('status','module successfully added');
     }
 
-    // public function show($role){
-    //     if($role == 'student'){
-    //         $data = Student::all();
-    //         return view('admin.show',['data' => $data,'role' => $role]);
-    //     }
-    //     elseif($role == 'lecturer'){
-    //         $data = Lecturer::all();
-    //         return view('admin.show',['data' => $data,'role' => $role]);
-    //     }
-    //     else{
-    //         $data = Module::all();
-    //         return view('admin.show',['data' => $data,'role' => $role]);
-    //     }
+    public function showLogin(){
+        return view('admin.login');
+    }
 
-    // }
+   public function login(Request $request){
+       $fields = $request->validate([
+           'username'=>'required',
+           'password'=>'required'
+        ]);
+        // dd(auth('admin')->attempt($fields));
+        if(auth('admin')->attempt($fields)){
+            return redirect()->route('admin.dashboard');
+        }
+        return back()->with('error','invalid login');
+   }
+
+   public function showMakeAdmin(){
+    $lecturers = Lecturer::all();
+    return view('admin.makeAdmin',['lecturers' => $lecturers]);
+   }
+
+
+   public function makeAdmin(Request $request){
+    $fields = $request->validate(['lecturer_id'=>'required']);
+    $lecturer = Lecturer::findOrfail($fields['lecturer_id']);
+    if($lecturer["is_admin"]){
+        return back()->with('success',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is already an admin');
+    }
+    $fields["is_admin"] = true;
+    $lecturer->update($fields);
+    $admin = [
+        'id'=>$fields['lecturer_id'],
+        'username'=>'admin',
+        'email'=>$lecturer['email'],
+        'password'=>bcrypt('password')
+    ];
+    Admin::create($admin);
+    return back()->with('success',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is now an admin');
+   }
 }

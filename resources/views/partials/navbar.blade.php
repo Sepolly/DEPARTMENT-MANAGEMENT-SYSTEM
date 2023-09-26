@@ -1,4 +1,4 @@
-<nav class="container max-w-full h-12 border flex justify-between items-center px-5 bg-gray-100 top-0 left-0 right-0">
+<nav class="container max-w-full h-12 border flex justify-between items-center px-5 bg-white shadow-lg top-0 left-0 right-0">
     
     <span class="flex items-center gap-2 w-auto h-full p-1">
 

@@ -14,10 +14,12 @@ class StudentController extends Controller
 {
 
     public function index(){
-        // $lecturers = Lecturer::with('modules')->get();
+        
         $student_level = auth('student')->user()->level;
-        $modules = Module::where('level', $student_level)->get();
-        // dd($modules);
+        $modules = Module::where('level', $student_level)
+        ->orderBy('module_name','asc')
+        ->get();
+        
         return view('student.home',['modules'=>$modules]);
     }
 
@@ -120,6 +122,13 @@ class StudentController extends Controller
     public function logout(){
         auth('student')->logout();
         return redirect('/student/login');
+    }
+
+
+    public function module($module_code){
+        $module = Module::find($module_code);
+        return view('student.module',['module' => $module]);
+
     }
 
     

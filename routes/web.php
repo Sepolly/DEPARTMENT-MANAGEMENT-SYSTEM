@@ -62,6 +62,7 @@ Route::middleware(['student'])->prefix('student')->group(function(){
     Route::get('/update/password/{regno}',[StudentController::class,'showPasswordUpdateForm']);
     Route::get('/update/image/{regno}',[StudentController::class,'showImageUpdateForm']);
     Route::delete('/update/image/{regno}',[StudentController::class,'deleteImage']);
+    Route::get('/module/{module_code}',[StudentController::class,'module']);
 
     // POST REQUESTS
     Route::post('/update/password/{regno}',[StudentController::class,'updatePassword']);

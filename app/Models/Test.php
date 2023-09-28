@@ -19,4 +19,8 @@ class Test extends Model
         'module_code'
     ];
 
+    public function testsubmission(){
+        return $this->hasOne(TestSubmission::class,'test_id');
+    }
+
 }

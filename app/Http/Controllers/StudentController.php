@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\Module;
 use App\Models\Lecturer;
+use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -127,7 +128,9 @@ class StudentController extends Controller
 
     public function module($module_code){
         $module = Module::find($module_code);
-        return view('student.module',['module' => $module]);
+        $notes = Note::where('level',auth('student')->user()->level)->paginate(3);
+        
+        return view('student.module',['module' => $module,'notes'=>$notes]);
 
     }
 

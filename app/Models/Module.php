@@ -18,4 +18,13 @@ class Module extends Model
     public function lecturer(){
         return $this->belongsTo(Lecturer::class);
     }
+
+    public function course(){
+        return $this->belongsTo(Course::class);
+    }
+
+    public function testgrade(){
+        return $this->hasMany(TestGrade::class,'module_code');
+    }
+    
 }

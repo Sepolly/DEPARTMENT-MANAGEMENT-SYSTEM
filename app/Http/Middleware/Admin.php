@@ -15,6 +15,9 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        if(auth('admin')->check()){
+            return $next($request);
+        }
+        return redirect('/admin/login');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\StudentController;
 use App\Models\Lecturer;
 use App\Models\Module;
@@ -38,13 +39,35 @@ Route::prefix('admin')->group(function(){
     Route::get('/addLecturer', function(){
         return view('admin.addLecturer');
     });
+    Route::get('/addCourse', function(){
+        return view('admin.addCourse');
+    });
     
     Route::post('/admin/makeadmin',[AdminController::class,'makeAdmin']);
     Route::post('/addLecturer',[AdminController::class,'addLecturer']);
     Route::post('/addModule',[AdminController::class,'addModule']);
     Route::post('/addStudent',[AdminController::class,'addStudent']);
+    Route::post('/addCourse',[AdminController::class,'addCourse']);
 
 });
+
+
+// LECTURER ROUTES
+Route::get('/lecturer/login',[LecturerController::class,'showLoginForm']);
+Route::post('/lecturer/login',[LecturerController::class,'login']);
+
+Route::middleware(['lecturer'])->prefix('lecturer')->group(function(){
+
+    Route::get('/', [LecturerController::class,'dashboard']);
+    Route::get('/module/{module_code}', [LecturerController::class,'module']);
+    Route::get('/logout', [LecturerController::class,'logout']);
+
+    Route::post('/notes/upload/{module_code}', [LecturerController::class,'noteUpload']);
+    Route::post('/assignment/upload/{module_code}', [LecturerController::class,'assignmentUpload']);
+});
+
+
+
 
 
 

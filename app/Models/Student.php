@@ -59,4 +59,16 @@ class Student extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function testsubmission(){
+        return $this->hasMany(TestSubmission::class,'student_id');
+    }
+
+    public function testgrade(){
+        return $this->hasMany(TestGrade::class,'student_id');
+    }
+
+    public function attendances(){
+        return $this->belongsToMany(Attendance::class,'student_id');
+    }
 }

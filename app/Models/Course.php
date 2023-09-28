@@ -16,4 +16,12 @@ class Course extends Model
    protected $primaryKey = 'course_id';
    public $keyType = 'string';
    public $incrementing = false;
+
+   public function modules(){
+    return $this->hasMany(Module::class);
+   }
+
+   public function timetable(){
+    return $this->hasOne(Timetable::class,'course_id');
+   }
 }

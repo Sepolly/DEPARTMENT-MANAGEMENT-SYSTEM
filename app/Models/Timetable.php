@@ -15,4 +15,8 @@ class Timetable extends Model
         'file',
         'published'
     ];
+
+    public function course(){
+        return $this->belongsTo(Course::class);
+    }
 }

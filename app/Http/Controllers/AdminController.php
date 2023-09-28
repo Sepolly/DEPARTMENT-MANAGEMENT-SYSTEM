@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
-use App\Models\Module;
-use App\Models\Lecturer;
 use App\Models\Admin;
+use App\Models\Course;
+use App\Models\Module;
+use App\Models\Student;
+use App\Models\Lecturer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -103,6 +104,18 @@ class AdminController extends Controller
         return back()->with('status','module successfully added');
     }
 
+
+    public function addCourse(Request $request){
+        $fields = $request->validate([
+            'course_id'=>'required',
+            'course_name'=>'required'
+        ]);
+        Course::create($fields);
+        return back()->with('success','course created successfully');
+    }
+
+
+
     public function showLogin(){
         return view('admin.login');
     }
@@ -112,9 +125,9 @@ class AdminController extends Controller
            'username'=>'required',
            'password'=>'required'
         ]);
-        // dd(auth('admin')->attempt($fields));
+        
         if(auth('admin')->attempt($fields)){
-            return redirect()->route('admin.dashboard');
+            return redirect('/admin');
         }
         return back()->with('error','invalid login');
    }

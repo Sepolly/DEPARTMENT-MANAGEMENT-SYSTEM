@@ -12,6 +12,7 @@ class AssignmentGrade extends Model
         'grade_id',
         'submission_id',
         'grade',
-        'comment'
+        'comment',
+        
     ];
 }

@@ -7,6 +7,8 @@
     @vite('resources/css/app.css')
 </head>
 <body>
+    @auth('admin')
     <h1>only admin access</h1>
+    @endauth
 </body>
 </html>

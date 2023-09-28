@@ -7,7 +7,7 @@
     <title>profile</title>
 </head>
 <body>
-   @extends('layout.layout')
+   @extends('layout.studentLayout')
    @section('content')
     <section class = "w-full flex justify-center items-center">
         <div class = "flex w-96 h-96 mt-20 p-5 gap-10 items-center flex-col shadow-md rounded">

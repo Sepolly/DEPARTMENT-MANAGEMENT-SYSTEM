@@ -18,4 +18,8 @@ class Attendance extends Model
         'student_id',
         'level'
     ];
+
+    public function students(){
+        return $this->belongsToMany(Student::class);
+    }
 }

@@ -12,6 +12,16 @@ class TestGrade extends Model
         'grade_id',
         'submission_id',
         'grade',
-        'comment'
+        'comment',
+        'student_id',
+        'module_code'
     ];
+
+    public function testsubmission(){
+        return $this->belongsTo(TestGrade::class);
+    }
+
+    public function student(){
+        return $this->belongsTo(Student::class);
+    }
 }

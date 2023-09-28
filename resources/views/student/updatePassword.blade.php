@@ -7,7 +7,7 @@
     <title>profile</title>
 </head>
 <body>
-    @extends('layout.layout')
+    @extends('layout.studentLayout')
     @section('content')
     <section class = "w-full flex justify-center items-center">
         <form action="/student/update/password/{{auth('student')->user()->regno}}" method = "POST" class = "flex w-96 h-96 mt-20 p-10 gap-10 items-center flex-col shadow-md rounded">

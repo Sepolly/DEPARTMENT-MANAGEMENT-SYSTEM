@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.studentLayout')
 
 @section('content')
 
@@ -94,19 +94,25 @@
                 <center>
                     <h4>NOTES</h4>
                 </center>
+                @if(count($notes) > 0)
                 <p class = "text-sm text-gray-400">click on a note to download</p>
-                <a href = "public\files\Learn Java GUI Applications_ A JFC Swing Tutorial ( PDFDrive ).pdf" download>
-                    <div class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 whitespace-nowrap px-6 py-2 cursor-pointer">
+                    @foreach($notes as $note)
+                    <a href="{{ asset('files/notes/' . $note->file) }}" class="block border-b w-full text-left transition duration-300 ease-in-out hover:bg-neutral-100 whitespace-nowrap px-6 py-2 cursor-pointer" download>
                         <i class="fa-solid fa-paperclip text-sm"></i>
-                        <span>Java Swing Tutorial</span>
-                    </div>
-                </a>
-                <a href = "public\files\Learn Java GUI Applications_ A JFC Swing Tutorial ( PDFDrive ).pdf" download>
-                    <div class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 whitespace-nowrap px-6 py-2 cursor-pointer">
-                        <i class="fa-solid fa-paperclip text-sm"></i>
-                        Note 2( Topic 1 & 2)
-                    </div>
-                </a>
+                        <span>
+                            {{ $note->title }}
+                        </span>
+                        <span class = "float-right text-sm font-light text-gray-500">
+                            {{ $note->created_at}}
+                        </span>
+                    </a>
+                    @endforeach
+                    <div class = "p-5">{{$notes->links()}}</div>
+                    @else
+                        <div class="h-full w-full flex justify-center items-center font-light text-gray-400 text-sm">
+                            No notes uploaded
+                        </div>
+                @endif
             </div>
         </div>
     

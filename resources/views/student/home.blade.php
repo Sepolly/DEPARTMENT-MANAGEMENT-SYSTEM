@@ -1,7 +1,7 @@
 
     @auth('student')
     {{-- Navigation bar and footer layout --}}
-    @extends('layout.layout')
+    @extends('layout.studentLayout')
 
     @section('content')
 

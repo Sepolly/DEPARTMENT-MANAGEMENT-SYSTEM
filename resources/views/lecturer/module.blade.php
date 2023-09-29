@@ -165,7 +165,7 @@
                 </tr>
                 @endforeach
             </tbody>
-            <button @click = "open =! open" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">upload</button>
+            <button @click = "open =! open" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add notes</button>
           </table>
           
           {{-- form to upload notes --}}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Student;
 use App\Models\Module;
 use App\Models\Lecturer;
@@ -128,9 +129,14 @@ class StudentController extends Controller
 
     public function module($module_code){
         $module = Module::find($module_code);
-        $notes = Note::where('level',auth('student')->user()->level)->paginate(3);
+        $notes = Note::where('module_code',$module_code)->get();
+        $assignments = Assignment::where('module_code',$module_code)->paginate(5);
         
-        return view('student.module',['module' => $module,'notes'=>$notes]);
+        return view('student.module',[
+            'module' => $module,
+            'notes'=>$notes,
+            'assignments'=>$assignments
+        ]);
 
     }
 

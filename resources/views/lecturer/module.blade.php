@@ -3,8 +3,9 @@
 @section('content')
 
 
-<section class = "grid grid-cols-1 gap-5">
-    <section class="grid grid-cols-2 gap-5 p-5 h-screen">
+<section class = "grid grid-cols-1">
+  {{-- first section --}}
+    <section class="grid grid-cols-2 gap-5 p-5">
     
         <div class = "grid grid-rows-3 gap-5">
     
@@ -21,23 +22,35 @@
             </div>
     
             {{-- DESCRIPTIPN AND OBJECTIVE --}}
-            <div class = " grid drop-shadow-2xl rounded-xl bg-white row-span-2 p-8">
-                <h3 class = "font-bold">DESCRIPTION</h3>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam assumenda, quidem, aliquid expedita cum culpa fugiat laborum modi voluptatibus pariatur, est eum? Repellat totam dolor eum pariatur culpa tempore eius, doloribus consequuntur doloremque? Suscipit quas eum accusantium. Itaque quis nisi error libero odit fugiat repellendus voluptatum excepturi aperiam, provident rem?</p>
-                <hr>
-                <h3 class = "font-bold">OBJECTIVES</h3>
-                <ul class = "list-disc list-inside">
-                    <li>objective 1</li>
-                    <li>objective 2</li>
-                    <li>objective 3</li>
-                </ul>
-            </div>
-
+            <div x-data="{ open: false }" class="grid drop-shadow-2xl rounded-xl bg-white row-span-2 p-5">
+              <div class="flex h-10 justify-between items-center">
+                  <h3 class="font-bold">DESCRIPTION</h3>
+                  <button @click="open = !open" class="h-8 w-8 rounded-full hover:bg-neutral-100 transition-all">
+                      <i class="fa-solid fa-pencil"></i>
+                  </button>
+              </div>
+              <p x-show="!open">{{$module->description}}</p>
+              <form x-show="open" x-cloak x-transition action="/lecturer/module/update/{{$module->module_code}}" method="POST">
+                  @csrf
+                  <div class = "h-80 w-[580px]">
+                    <textarea name="description" class="editor">{{$module->description}}</textarea>
+                  </div>
+                  <button type="submit" class="px-4 py-2 mt-1 bg-gray-400 text-white hover:bg-gray-500 rounded transition-all">Save</button>
+              </form>
+          </div>          
         </div>
     
         {{-- STUDENTS --}}
         <div class = "p-5 drop-shadow-2xl rounded-xl bg-white">
-
+          <div class = "flex items-center justify-end">
+            <input 
+            type="search" 
+            name=""
+            id = "searchInput" 
+            class = "w-40 py-2 px-4 m-2 rounded-full bg-gray-50 text-gray-500 outline-none focus:bg-gray-100 placeholder:pl-2 placeholder:text-center transition-all" 
+            placeholder="search"
+            >
+          </div>
             <table class = "w-full text-sm font-light">
                 <thead class = "bg-green-50">
                     <th class = "p-2">image</th>
@@ -46,15 +59,15 @@
                     <th class = "p-2">last name</th>
                     <th class = "p-2">phone</th>
                 </thead>
-                <tbody>
+                <tbody id = "studentRecord">
                     @foreach($students as $student)
-                    <tr class = "border-b border-gray-200 text-center">
+                    <tr key = {{$student->regno}} class = "border-b border-gray-200 text-center">
                         @if($student->image)
-                        <td>
+                        <td class = "flex justify-center items-center p-2">
                             <img src={{ asset('/images/profile/' . $student->image) }} alt="" class = "h-10 w-10 rounded-full">
                         </td>
                         @else
-                        <td>
+                        <td class = "flex justify-center items-center p-2">
                             <img src={{ asset('/images/profile/profile-default.png') }} alt="" class = "h-10 w-10 rounded-full">
                         </td>
                         @endif
@@ -71,12 +84,12 @@
     
     </section>
     
-    
-    <section class = "grid grid-cols-2 gap-5 p-5 h-96">
+    {{-- second section --}}
+    <section class = "grid grid-cols-2 gap-5 p-5">
 
         {{-- UPLOADED ASSIGNMENTS --}}
-        <div class = "p-5 drop-shadow-2xl rounded-xl bg-white">
-            <table class = "min-w-full text-sm font-light">
+        <div  x-data = "{open: false}" class = "w-auto p-5 drop-shadow-2xl rounded-xl bg-white">
+            <table :class = "open && 'hidden' " class = "min-w-full text-sm font-light">
                 <center>
                     <h4 class = "table-caption">ASSIGNMENTS</h4>
                 </center>
@@ -84,23 +97,39 @@
                     <th scope="col" class="px-6 py-4">Title</th>
                     <th scope="col" class="px-6 py-4">date assigned</th>
                     <th scope="col" class="px-6 py-4">due date</th>
+                    <th scope="col" class="px-6 py-4">action</th>
                 </thead>
                 <tbody>
                   @if(count($notes) > 0)
                     @foreach($assignments as $assignment)
-                    <tr class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 cursor-pointer">
+                    <tr class = "border-b">
                         <td class="whitespace-nowrap px-6 py-4">{{$assignment->assignment_title}}</td>
                         <td class="whitespace-nowrap px-6 py-4">{{$assignment->created_at}}</td>
-                        <td class="whitespace-nowrap px-6 py-4">{{$assignment->assignment_due_date}}</td>
+                        <td class="whitespace-nowrap px-6 py-4">
+                          @php
+                              echo dueDateChecker($assignment->assignment_due_date);
+                          @endphp
+                        </td>
+                        <td class="whitespace-nowrap px-6 py-4 flex justify-between items-center">
+                          <a href="" class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer">
+                            <i class="fa-solid fa-pencil hover:text-gray-700"></i>
+                          </a>
+                          <a href="" class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer">
+                            <i class="fa-solid fa-trash hover:text-gray-700"></i>
+                          </a>
+                        </td>
                     </tr>
                     @endforeach
                   @endif
                 </tbody>
-                <button class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add assignment</button>
+                <button  @click = "open = !open" :class = "open && 'hidden'" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add assignment</button>
+                <button @click = "open = !open" x-show = "open"  class = "ml-8 flex justify-center items-center rounded-full w-10 h-10 hover:bg-gray-200 active:border-2 active:border-gray-100 transition-all"><i class="fa-solid fa-arrow-left"></i></button>
+                </button>
             </table>
 
             {{-- form to upload assignment --}}
             <form 
+            x-show = "open"
             action = "/lecturer/assignment/upload/{{$module->module_code}}" 
             method = "POST" 
             class = "p-8" 
@@ -112,33 +141,37 @@
                   {{Session::get('message')}}
                 </div>
               @endif
-              <div class="mb-4">
+              <div>
                   <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
                   <input name = "title" type="text" id="title" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
                   @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
-              <div class="mb-4">
+              <div>
                   <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                  <input name = "description" type="text" id="description" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  <textarea name = "description" id="description" class="editor"></textarea>
                   @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
-              <div class="mb-4">
+              <div>
                   <label for="due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
-                  <input name = "due_date" type="date" id="due_date" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  <input name = "due_date" type = "date" id="due_date" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
                   @error('due_date') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
-              <div class="mb-4">
+              <div>
+                  <label for="due_time" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
+                  <input name = "due_time" type = "time" id="due_time" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  @error('due_time') <span class="text-red-500">{{ $message }}</span> @enderror
+              </div>
+              <div>
                   <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Content</label>
-                  <input name = "content" type="text" id="content" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  <textarea name = "content" id="editor" class="editor"></textarea>
                   @error('content') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
       
-              <div class="mb-4">
-                  <label for="file" class="block text-gray-700 text-sm font-bold mb-2">File</label>
+              <div>
+                  <label class="block text-gray-700 text-sm font-bold mb-2">File</label>
                   <input name = "file" type = "file" id="file" class = "appearance-none bg-gray-100 cursor-pointer rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
                   @error('file') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
-
               <button type="submit" class="bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">Upload</button>
             </form>
         </div>
@@ -148,8 +181,8 @@
 
     
         {{-- UPLOADED NOTES --}}
-        <div x-data = "{open: false}" class = "gap-5 p-5 drop-shadow-2xl rounded-xl bg-white">
-          <table class = "min-w-full text-sm font-light">
+        <div x-data = "{openNoteForm: false}" class = "gap-5 p-5 drop-shadow-2xl rounded-xl bg-white">
+          <table :class = "openNoteForm ? 'hidden' : '' " class = "min-w-full text-sm font-light">
             <center>
                 <h4 class = "table-caption">NOTES</h4>
             </center>
@@ -165,16 +198,18 @@
                 </tr>
                 @endforeach
             </tbody>
-            <button @click = "open =! open" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add notes</button>
+            <button :class = "openNoteForm && 'hidden' " @click = "openNoteForm = !openNoteForm" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add notes</button>
+            <button @click = "openNoteForm = !openNoteForm" x-show = "openNoteForm"  class = "flex justify-center items-center rounded-full w-10 h-10 hover:bg-gray-200 active:border-2 active:border-gray-100 transition-all"><i class="fa-solid fa-arrow-left"></i></button>
           </table>
+          <div>{{$notes->links('vendor.pagination.tailwind')}}</div>
           
           {{-- form to upload notes --}}
           <form 
-          x-show = "open" 
+          x-show = "openNoteForm" 
           x-transition
           action = "/lecturer/notes/upload/{{$module->module_code}}" 
           method = "POST" 
-          class = "p-8" 
+          :class = "openNoteForm ? 'p-5' : 'hidden' " 
           enctype="multipart/form-data"
            >
             @csrf
@@ -204,6 +239,50 @@
 
 
 <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const editors = document.querySelectorAll('.editor');
+
+    editors.forEach(function(editorElement) {
+        ClassicEditor
+            .create(editorElement)
+            .then(editor => {
+                console.log(editor);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+});
+
+
+
+      const searchInput = document.getElementById("searchInput");
+
+      searchInput.addEventListener('input', function() {
+      const searchQuery = searchInput.value.trim().toLowerCase();
+
+      // Loop through the table rows and hide/show based on the search query
+      const tableRows = document.getElementById('studentRecord').querySelectorAll("tr");
+      
+      tableRows.forEach(function(row) {
+          const regno = row.querySelector("td:nth-child(2)").textContent;
+          const firstName = row.querySelector("td:nth-child(3)").textContent.toLowerCase();
+          const lastName = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+
+          if (firstName.includes(searchQuery) || lastName.includes(searchQuery) || regno.includes(searchQuery)) {
+              row.style.display = "table-row";
+          } else {
+              row.style.display = "none";
+          }
+      });
+  });
+
+
+
+
+
+
+
     const attendance = document.getElementById('attendanceChart');
     const performance = document.getElementById('performanceChart');
 

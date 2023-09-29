@@ -22,7 +22,7 @@ class LecturerController extends Controller
         $moduledata = Module::find($module_code);
         $students = Student::where('level', $moduledata->level)->paginate(10);
         $notes = Note::where('module_code', $moduledata->module_code)->paginate(5);
-        $assignments = Assignment::where('module_code', $moduledata->module_code)->paginate(5);
+        $assignments = Assignment::where('module_code', $moduledata->module_code)->get();
 
         return view('lecturer.module', [
             'module' => $moduledata, 
@@ -66,6 +66,7 @@ class LecturerController extends Controller
             'title'=>'required',
             'description'=>'required',
             'due_date'=>'required',
+            'due_time'=>'required',
             'content'=>'nullable',
             'file'=>'required|file',
         ]);
@@ -75,6 +76,7 @@ class LecturerController extends Controller
         $assignment->assignment_title = $request->title;
         $assignment->assignment_description = $request->description;
         $assignment->assignment_due_date = $request->due_date;
+        $assignment->assignment_due_time = $request->due_time;
         $assignment->assignment_content = $request->content;
         $assignment->module_code = $module_code;
         $assignment->assignment_file = $file;
@@ -84,6 +86,18 @@ class LecturerController extends Controller
         $request->file->move(public_path('files/assignments'), $file);
 
         return back()->with('message','assignment added');
+    }
+
+    public function updateModule(Request $request,$module_code){
+        $module = Module::findOrFail($module_code);
+        $request->validate(['description'=>'required']);
+
+        $module->description = strip_tags($request->description);
+        $module->save();
+
+        return back()->with('message','description updated');
+
+
     }
 
 

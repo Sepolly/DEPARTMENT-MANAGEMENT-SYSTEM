@@ -64,6 +64,7 @@ Route::middleware(['lecturer'])->prefix('lecturer')->group(function(){
 
     Route::post('/notes/upload/{module_code}', [LecturerController::class,'noteUpload']);
     Route::post('/assignment/upload/{module_code}', [LecturerController::class,'assignmentUpload']);
+    Route::post('/module/update/{module_code}', [LecturerController::class,'updateModule']);
 });
 
 

@@ -3,8 +3,8 @@
 @section('content')
 
 
-<section class = "grid grid-cols-1 gap-5">
-    <section class="grid grid-cols-2 gap-5 p-5 h-screen">
+<section class = "grid grid-cols-1 overflow-clip">
+    <section class="grid grid-cols-2 gap-5 p-5 min-h-screen min-w-full">
     
         <div class = "grid grid-rows-3 gap-5">
     
@@ -84,30 +84,42 @@
     </section>
     
     
-    <section class = "grid grid-cols-2 gap-5 p-5 h-[100%]">
+    <section class = "grid grid-cols-2 gap-5 p-5 h-[100%] overscroll-contain">
         {{-- PERFORMANCE CHART AND NOTES --}}
-        <div class = "grid grid-rows-3 gap-5">
-            <div class = "row-span-2 p-5 drop-shadow-2xl rounded-xl bg-white">
+        <div class = "grid grid-rows-2 gap-5">
+            <div class = "p-5 drop-shadow-2xl rounded-xl bg-white">
                 <canvas id="performanceChart"></canvas>
             </div>
-            <div class = "p-5 drop-shadow-2xl rounded-xl bg-white">
+            <div class = "p-5 drop-shadow-2xl rounded-xl bg-white ">
                 <center>
-                    <h4>NOTES</h4>
+                    <h4 class = "text-green-500 font-bold text-xl">NOTES</h4>
                 </center>
                 @if(count($notes) > 0)
-                <p class = "text-sm text-gray-400">click on a note to download</p>
+                <div class = "flex justify-between items-center m-2">
+                    <p class = "text-sm text-gray-400">click on a note to download</p>
+                    <input 
+                    type="search" 
+                    id = "searchInput"
+                    class = "w-40 py-2 px-4 rounded-full bg-gray-50 text-gray-500 outline-none focus:bg-gray-100 placeholder:pl-2 placeholder:text-center transition-all" 
+                    placeholder="search"
+                    >
+                </div>
+                <div class = "overflow-y-scroll">
                     @foreach($notes as $note)
-                    <a href="{{ asset('files/notes/' . $note->file) }}" class="block border-b w-full text-left transition duration-300 ease-in-out hover:bg-neutral-100 whitespace-nowrap px-6 py-2 cursor-pointer" download>
-                        <i class="fa-solid fa-paperclip text-sm"></i>
-                        <span>
-                            {{ $note->title }}
-                        </span>
-                        <span class = "float-right text-sm font-light text-gray-500">
-                            {{ $note->created_at}}
-                        </span>
-                    </a>
+                    <div class = "note-entry" id = "noteLink">
+                        <a id = "noteLink"  href="{{ asset('files/notes/' . $note->file) }}" class="block border-b w-full text-left transition duration-300 ease-in-out hover:bg-neutral-100 whitespace-nowrap px-6 py-2 cursor-pointer" download>
+                            <i class="fa-solid fa-paperclip text-sm"></i>
+                            <span>
+                                {{ $note->title }}
+                            </span>
+                            <span class = "float-right text-sm font-light text-gray-500">
+                                {{ $note->created_at}}
+                            </span>
+                        </a>
+                    </div>
                     @endforeach
-                    <div class = "p-5">{{$notes->links()}}</div>
+                </div>
+
                     @else
                         <div class="h-full w-full flex justify-center items-center font-light text-gray-400 text-sm">
                             No notes uploaded
@@ -119,9 +131,9 @@
         {{-- TEST AND ASSIGNMENT --}}
         <div class = "grid grid-rows-2 gap-5">
             <div class = "p-5 drop-shadow-2xl rounded-xl bg-white">
-                <table class = "min-w-full text-sm font-light">
+                <table class = "text-sm font-light m-auto">
                     <center>
-                        <h4 class = "table-caption">TESTS</h4>
+                        <h4 class = "text-green-500 font-bold text-xl">TESTS</h4>
                     </center>
                     <thead class = "border-b font-medium text-left">
                         <th scope="col" class="px-6 py-4">Topic</th>
@@ -148,35 +160,102 @@
                     </tbody>
                 </table>
             </div>
-            <div class = "p-5 drop-shadow-2xl rounded-xl bg-white">
-                <table class = "min-w-full text-sm font-light">
+
+            {{-- ASSIGNMENTS --}}
+            <div class = "drop-shadow-2xl rounded-xl p-5 bg-white">
+                <table class = "min-w-full text-sm font-light ">
                     <center>
-                        <h4 class = "table-caption">ASSIGNMENTS</h4>
+                        <h4 class = "text-green-500 font-bold text-xl">ASSIGNMENTS</h4>
                     </center>
+                    <div class = "flex items-center justify-end">
+                        <input 
+                    type="search" 
+                    id = "assignmentSearch"
+                    name="" 
+                    class = "w-40 py-2 px-4 rounded-full bg-gray-50 text-gray-500 outline-none focus:bg-gray-100 placeholder:pl-2 placeholder:text-center transition-all" 
+                    placeholder="search"
+                    >
+                    </div>
                     <thead class = "border-b font-medium text-left">
                         <th scope="col" class="px-6 py-4">Title</th>
-                        <th scope="col" class="px-6 py-4">date</th>
+                        <th scope="col" class="px-6 py-4">due date</th>
+                        <th scope="col" class="px-6 py-4">due time</th>
                         <th scope="col" class="px-6 py-4">status</th>
                     </thead>
-                    <tbody>
-                        <tr class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 cursor-pointer">
-                            <td class="whitespace-nowrap px-6 py-4">Lorem ipsum dolor sit amet.</td>
-                            <td class="whitespace-nowrap px-6 py-4">25/9/23</td>
-                            <td class="whitespace-nowrap px-6 py-4 text-green-400">submitted</td>
-                        </tr>
-                        <tr class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 cursor-pointer">
-                            <td class="whitespace-nowrap px-6 py-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</td>
-                            <td class="whitespace-nowrap px-6 py-4">28/9/23</td>
-                            <td class="whitespace-nowrap px-6 py-4 text-red-400"></td>
-                        </tr>
+                    <tbody id = "assignmentScope" class = "overflow-y-scroll">
+                        @if(count($assignments) > 0)
+                        @foreach($assignments as $assignment)
+                            <tr class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 cursor-pointer overflow-y-scroll">
+                                <td class="whitespace-nowrap px-6 py-4">{{$assignment->assignment_title}}</td>
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    @php
+                                        echo dueDateChecker($assignment->assignment_due_date);
+                                    @endphp
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-4 text-blue-400">{{$assignment->assignment_due_time}}</td>
+                                <td class="whitespace-nowrap px-6 py-4 text-green-400">submitted</td>
+                            </tr>
+                        @endforeach
+                        @endif
                     </tbody>
                 </table>
+                <p>{{$assignments->links()}}</p>
             </div>
         </div>
     </section>
 </section>
 
 <script>
+
+    // java script code to filter notes based on search query
+    const searchInput = document.getElementById("searchInput");
+
+    searchInput.addEventListener('input', function() {
+        const searchQuery = searchInput.value.trim().toLowerCase();
+        // const cleanSearch = searchQuery.replace(/\s+/g, '');
+
+        // Loop through the note entries and hide/show based on the search query
+        const noteEntries = document.querySelectorAll('.note-entry');
+
+        noteEntries.forEach(function(entry) {
+            const noteTitle = entry.querySelector("span").textContent.toLowerCase();
+
+            if (noteTitle.includes(searchQuery) || noteTitle == searchQuery) {
+                entry.style.display = "block";
+            } else {
+                entry.style.display = "none";
+            }
+        });
+    
+    });
+    // end of the filter notes code
+
+
+    // Javascript code to filter assignments based on search query
+    const assignmentSearch = document.getElementById("assignmentSearch");
+    
+    assignmentSearch.addEventListener('input',()=>{
+        const searchInput  = assignmentSearch.value.trim().toLowerCase();
+
+        const tableRows = document.getElementById("assignmentScope").querySelectorAll("tr");
+
+        tableRows.forEach((row)=>{
+            const title = row.querySelector("td:first-child").textContent.toLowerCase();
+            const status = row.querySelector("td:last-child").textContent.toLowerCase();
+
+            if(title.includes(searchInput) || status.includes(searchInput)){
+                row.style.display = "table-row";
+            }
+            else{
+                row.style.display = "none";
+            }
+            
+        });
+    });
+    // end of the filter assignments code
+
+
+
     const attendance = document.getElementById('attendanceChart');
     const performance = document.getElementById('performanceChart');
       

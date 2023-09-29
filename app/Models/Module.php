@@ -26,5 +26,12 @@ class Module extends Model
     public function testgrade(){
         return $this->hasMany(TestGrade::class,'module_code');
     }
+
+    public function assignments(){
+        return $this->hasMany(Assignment::class,'module_code');
+    }
+    public function notes(){
+        return $this->hasMany(Note::class,'module_code');
+    }
     
 }

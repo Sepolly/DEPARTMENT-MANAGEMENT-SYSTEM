@@ -21,8 +21,8 @@ class LecturerController extends Controller
     {
         $moduledata = Module::find($module_code);
         $students = Student::where('level', $moduledata->level)->paginate(10);
-        $notes = Note::where('module_code', $moduledata->module_code)->paginate(5);
-        $assignments = Assignment::where('module_code', $moduledata->module_code)->get();
+        $notes = Note::where('module_code', $moduledata->module_code)->get();
+        $assignments = $moduledata->assignments;
 
         return view('lecturer.module', [
             'module' => $moduledata, 
@@ -60,8 +60,6 @@ class LecturerController extends Controller
 
     // Function to upload assignment
     public function assignmentUpload(Request $request, $module_code){
-        $module = Module::where('module_code', $module_code)->firstOrFail();
-
         $request->validate([
             'title'=>'required',
             'description'=>'required',

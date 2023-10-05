@@ -72,6 +72,7 @@ class StudentController extends Controller
         
         $student = Student::findOrfail($regno);
         $image = time().".".$request->image->extension();
+        // $request->image->move(public_path('images/profile'), $image);
         $request->image->move(public_path('images/profile'), $image);
         $fields['image'] = $image;
         $student->update($fields);
@@ -85,31 +86,26 @@ class StudentController extends Controller
         // Find the student by their registration number
         $student = Student::findOrFail($regno);
     
-        // Get the image path from the student model
-        $imagePath = $student->image;
-    
         // Check if the image path exists and if the file exists in storage
-        if ($imagePath && Storage::disk('public')->exists($imagePath)) {
-            $imagePath = 'images/profile/'. $imagePath;
-            Storage::disk('public')->delete($imagePath);
-            
+        if ($student->image) {
+            $imagePath = '/images/profile/'. $student->image;
+            dd($imagePath);
+            $student->image = null;
+            $student->save();
+            return redirect('/student/profile/'.$regno);
         }
     
         // Clear the image attribute in the student model
-        $student->image = null;
-        $student->save();
-    
-        return redirect('/student/profile/'.$regno);
     }
     
 
 
 
     public function login(Request $request){
-        $fields = [
-            'regno' => $request->regno,
-            'password' => $request->loginpassword
-        ];
+        $fields = $request->validate([
+            'regno' => 'required',
+            'password' => 'required'
+        ]);
 
         if(strlen($fields["regno"]) == 0 || strlen($fields["password"] == 0)){
             return back()->with('error','please fill in data');
@@ -130,13 +126,30 @@ class StudentController extends Controller
     public function module($module_code){
         $module = Module::find($module_code);
         $notes = Note::where('module_code',$module_code)->get();
-        $assignments = Assignment::where('module_code',$module_code)->paginate(5);
+        $assignments = Assignment::where('module_code',$module_code)->get();
         
         return view('student.module',[
             'module' => $module,
             'notes'=>$notes,
             'assignments'=>$assignments
         ]);
+
+    }
+
+
+    public function showPasswordReset(){
+        return view('student.passwordReset');
+    }
+
+    public function passwordReset(Request $request){
+        $request->validate([
+            'email'=>'required|email'
+        ],[
+            'email.required'=>'please provide an email address',
+            'email.email'=>'please provide a valid email'
+        ]);
+
+
 
     }
 

@@ -20,14 +20,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Home route
+Route::get('/',fn()=>view('home'));
+
+// Route::get('/test',fn()=>view('emails.studentAdded'));
+
+
 // ADMIN ROUTES
 Route::get('/admin/login', [AdminController::class,'showLogin']);
 Route::post('/admin/login',[AdminController::class,'login']);
+Route::get('/admin', [AdminController::class,'dashboard']);
 
 Route::prefix('admin')->group(function(){
     
-    Route::get('/admin/makeadmin',[AdminController::class,'showMakeAdmin']);
-    Route::get('/', [AdminController::class,'dashboard'])->name('admin.dashboard');
+    Route::get('/makeadmin',[AdminController::class,'showMakeAdmin']);
     
     Route::get('/addStudent', function(){
         return view('admin.addStudent');
@@ -43,7 +49,7 @@ Route::prefix('admin')->group(function(){
         return view('admin.addCourse');
     });
     
-    Route::post('/admin/makeadmin',[AdminController::class,'makeAdmin']);
+    Route::post('/makeadmin',[AdminController::class,'makeAdmin']);
     Route::post('/addLecturer',[AdminController::class,'addLecturer']);
     Route::post('/addModule',[AdminController::class,'addModule']);
     Route::post('/addStudent',[AdminController::class,'addStudent']);
@@ -76,6 +82,8 @@ Route::middleware(['lecturer'])->prefix('lecturer')->group(function(){
 // STUDENT ROUTES
 Route::get('/student/login',[StudentController::class,'showLoginForm'])->name('login');
 Route::post('/student/login',[StudentController::class,'login']);
+Route::get('/student/passwordReset',[studentController::class,'showPasswordReset']);
+Route::post('/student/passwordReset',[studentController::class,'PasswordReset']);
 
 Route::middleware(['student'])->prefix('student')->group(function(){
     

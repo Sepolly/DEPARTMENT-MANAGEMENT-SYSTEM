@@ -12,7 +12,11 @@ class AssignmentGrade extends Model
         'grade_id',
         'submission_id',
         'grade',
-        'comment',
+        'comment'
         
     ];
+
+    public function assignmentSubmission(){
+        return $this->belongsTo(AssignmentSubmission::class,'submission_id');
+    }
 }

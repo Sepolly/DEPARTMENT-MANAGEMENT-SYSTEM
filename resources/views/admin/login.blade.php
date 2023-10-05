@@ -15,7 +15,7 @@
             </div>
             @if(Session::has('error'))
 
-            <div class = "bg-red-100 text-red-500 text-center rounded py-1">
+            <div id = "alertBox" class = "bg-red-100 text-red-500 text-center rounded py-1">
               {{Session::get('error')}}
             </div>
 
@@ -63,5 +63,12 @@
           </div>
         </form>
       </div>
+
+      <script>
+        const alertBox = document.getElementById("alertBox");
+        setTimeout(() => {
+          alertBox.style.display = "none";
+        }, 2000);
+      </script>
 </body>
 </html>

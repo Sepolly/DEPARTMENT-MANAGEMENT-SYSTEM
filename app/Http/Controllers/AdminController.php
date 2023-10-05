@@ -10,6 +10,7 @@ use App\Models\Lecturer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -18,9 +19,18 @@ class AdminController extends Controller
         $students = Student::all();
         $lecturers = Lecturer::all();
         $modules = Module::all();
-        return view('admin.admin',['students'=>$students,'lecturers'=>$lecturers,'modules'=>$modules]);
+        return view('admin.dashboard',['students'=>$students,'lecturers'=>$lecturers,'modules'=>$modules]);
     }
-   
+    
+    // // fxn to send mail
+    // public function sendStudentLoginMail(String $email){
+
+    // }
+
+    // // fxn to check there's there's internet connectivity
+    // public function isOnline($site = "https://www.google.com"){
+    //     return @fopen($site,'r') ? true : false;
+    // }
 
     public function addStudent(Request $request){
         $fields = $request->validate([
@@ -64,6 +74,11 @@ class AdminController extends Controller
 
         // insert values into the database
         Student::create($fields);
+
+        // tries to send mail to the just added student
+        // if($this->isOnline()){
+        //     $this->sendStudentLoginMail($fields["email"]);
+        // }
         return back()->with('status','student successfully added');
     }//end addStudent
 
@@ -93,10 +108,12 @@ class AdminController extends Controller
 
     public function addModule(Request $request){
         $fields = $request->validate([
-            'module_code' => 'required',
+            'module_code' => ['required',Rule::unique('modules','module_code')],
             'module_name'=>'required',
             'lecturer_id' => 'required',
             'level'=>'required'
+        ],[
+            'module_code.unique'=>'module code already in use'
         ]);
         
         $fields['level'] = intval($fields['level']);
@@ -120,6 +137,7 @@ class AdminController extends Controller
         return view('admin.login');
     }
 
+    // admin login function
    public function login(Request $request){
        $fields = $request->validate([
            'username'=>'required',
@@ -142,7 +160,7 @@ class AdminController extends Controller
     $fields = $request->validate(['lecturer_id'=>'required']);
     $lecturer = Lecturer::findOrfail($fields['lecturer_id']);
     if($lecturer["is_admin"]){
-        return back()->with('success',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is already an admin');
+        return back()->with('warning',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is already an admin');
     }
     $fields["is_admin"] = true;
     $lecturer->update($fields);

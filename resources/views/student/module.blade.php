@@ -23,14 +23,7 @@
             {{-- DESCRIPTIPN AND OBJECTIVE --}}
             <div class = " grid drop-shadow-2xl rounded-xl bg-white row-span-2 p-8">
                 <h3 class = "font-bold">DESCRIPTION</h3>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam assumenda, quidem, aliquid expedita cum culpa fugiat laborum modi voluptatibus pariatur, est eum? Repellat totam dolor eum pariatur culpa tempore eius, doloribus consequuntur doloremque? Suscipit quas eum accusantium. Itaque quis nisi error libero odit fugiat repellendus voluptatum excepturi aperiam, provident rem?</p>
-                <hr>
-                <h3 class = "font-bold">OBJECTIVES</h3>
-                <ul class = "list-disc list-inside">
-                    <li>objective 1</li>
-                    <li>objective 2</li>
-                    <li>objective 3</li>
-                </ul>
+                <p class = "font-light">{{$module->description}}</p>
             </div>
 
         </div>
@@ -109,7 +102,7 @@
                     <div class = "note-entry" id = "noteLink">
                         <a id = "noteLink"  href="{{ asset('files/notes/' . $note->file) }}" class="block border-b w-full text-left transition duration-300 ease-in-out hover:bg-neutral-100 whitespace-nowrap px-6 py-2 cursor-pointer" download>
                             <i class="fa-solid fa-paperclip text-sm"></i>
-                            <span>
+                            <span class = "font-light">
                                 {{ $note->title }}
                             </span>
                             <span class = "float-right text-sm font-light text-gray-500">
@@ -162,8 +155,8 @@
             </div>
 
             {{-- ASSIGNMENTS --}}
-            <div class = "drop-shadow-2xl rounded-xl p-5 bg-white">
-                <table class = "min-w-full text-sm font-light ">
+            <div class = "drop-shadow-2xl rounded-xl p-5 bg-white overflow-auto">
+                <table class = "min-w-full text-sm font-light">
                     <center>
                         <h4 class = "text-green-500 font-bold text-xl">ASSIGNMENTS</h4>
                     </center>
@@ -182,10 +175,10 @@
                         <th scope="col" class="px-6 py-4">due time</th>
                         <th scope="col" class="px-6 py-4">status</th>
                     </thead>
-                    <tbody id = "assignmentScope" class = "overflow-y-scroll">
+                    <tbody id = "assignmentScope">
                         @if(count($assignments) > 0)
                         @foreach($assignments as $assignment)
-                            <tr class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 cursor-pointer overflow-y-scroll">
+                            <tr class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 cursor-pointer overflow-scroll">
                                 <td class="whitespace-nowrap px-6 py-4">{{$assignment->assignment_title}}</td>
                                 <td class="whitespace-nowrap px-6 py-4">
                                     @php
@@ -199,7 +192,6 @@
                         @endif
                     </tbody>
                 </table>
-                <p>{{$assignments->links()}}</p>
             </div>
         </div>
     </section>

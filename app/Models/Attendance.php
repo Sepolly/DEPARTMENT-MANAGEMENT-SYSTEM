@@ -16,10 +16,15 @@ class Attendance extends Model
         'attendance_note',
         'signed_by',
         'student_id',
-        'level'
+        'level',
+        'module_code'
     ];
 
     public function students(){
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class,'student_id');
+    }
+
+    public function module(){
+        return $this->belongsTo(Module::class,'module_code');
     }
 }

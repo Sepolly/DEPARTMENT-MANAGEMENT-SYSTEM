@@ -34,6 +34,8 @@ class Lecturer extends Model  implements Authenticatable
         return $this->hasMany(Attendance::class,'signed_by');
     }
 
+
+    
     public function getAuthIdentifierName()
     {
         return 'id'; // Change this to the appropriate identifier field in your database

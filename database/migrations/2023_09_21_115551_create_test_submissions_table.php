@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('test_id');
             $table->unsignedBigInteger('student_id');
             $table->string('answers');
+            $table->string('module_code');
             $table->timestamps();
         });
     }

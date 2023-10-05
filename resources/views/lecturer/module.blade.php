@@ -29,10 +29,10 @@
                       <i class="fa-solid fa-pencil"></i>
                   </button>
               </div>
-              <p x-show="!open">{{$module->description}}</p>
+              <p x-show="!open" >{{$module->description}}</p>
               <form x-show="open" x-cloak x-transition action="/lecturer/module/update/{{$module->module_code}}" method="POST">
                   @csrf
-                  <div class = "h-80 w-[580px]">
+                  <div class = "h-80 w-[580px] overflow-scroll">
                     <textarea name="description" class="editor">{{$module->description}}</textarea>
                   </div>
                   <button type="submit" class="px-4 py-2 mt-1 bg-gray-400 text-white hover:bg-gray-500 rounded transition-all">Save</button>
@@ -88,43 +88,65 @@
     <section class = "grid grid-cols-2 gap-5 p-5">
 
         {{-- UPLOADED ASSIGNMENTS --}}
-        <div  x-data = "{open: false}" class = "w-auto p-5 drop-shadow-2xl rounded-xl bg-white">
-            <table :class = "open && 'hidden' " class = "min-w-full text-sm font-light">
-                <center>
-                    <h4 class = "table-caption">ASSIGNMENTS</h4>
-                </center>
+        <div  
+        x-data = "{open: false,edit: false}" 
+        class = "w-auto p-5 drop-shadow-2xl rounded-xl bg-white"
+        >
+            <center>
+                <h4 x-show = "!open && !edit" class = "table-caption">ASSIGNMENTS</h4>
+                <h4 x-show = "edit && !open" class = "w-32">Edit Assignment</h4>
+                <h4 x-show = "open" class = "w-32">Add Assignment</h4>
+            </center>
+
+            {{-- Add Assignment back button --}}
+            <button @click = "open = !open" x-show = "open"  class = "ml-8 flex justify-center items-center rounded-full w-10 h-10 hover:bg-gray-200 active:border-2 active:border-gray-100 transition-all">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+
+            {{-- Edit Assignment back button --}}
+            <button @click = "edit = !edit" x-show = "edit"  class = "ml-8 flex justify-center items-center rounded-full w-10 h-10 hover:bg-gray-200 active:border-2 active:border-gray-100 transition-all">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+
+            {{-- Add Assignment button --}}
+            <button  @click = "open = !open" :class = "(open || edit) && 'hidden'" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add assignment</button>
+
+            {{-- list of assignments --}}
+            <table x-show = "!open && !edit" class = "min-w-full text-sm font-light">
                 <thead class = "border-b font-medium text-left">
                     <th scope="col" class="px-6 py-4">Title</th>
-                    <th scope="col" class="px-6 py-4">date assigned</th>
+                    {{-- <th scope="col" class="px-6 py-4">date assigned</th> --}}
                     <th scope="col" class="px-6 py-4">due date</th>
-                    <th scope="col" class="px-6 py-4">action</th>
+                    <th scope="col" class="px-6 py-4 text-center">action</th>
                 </thead>
                 <tbody>
                   @if(count($notes) > 0)
                     @foreach($assignments as $assignment)
                     <tr class = "border-b">
                         <td class="whitespace-nowrap px-6 py-4">{{$assignment->assignment_title}}</td>
-                        <td class="whitespace-nowrap px-6 py-4">{{$assignment->created_at}}</td>
+                        {{-- <td class="whitespace-nowrap px-6 py-4">{{$assignment->created_at}}</td> --}}
                         <td class="whitespace-nowrap px-6 py-4">
                           @php
                               echo dueDateChecker($assignment->assignment_due_date);
                           @endphp
                         </td>
                         <td class="whitespace-nowrap px-6 py-4 flex justify-between items-center">
-                          <a href="" class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer">
+
+                          {{-- edit button --}}
+                          <button @click = "edit = !edit" class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer active:border-2 active:border-gray-100">
                             <i class="fa-solid fa-pencil hover:text-gray-700"></i>
-                          </a>
-                          <a href="" class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer">
+                          </button>
+
+                          {{-- delete button --}}
+                          <button class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer active:border-2 active:border-gray-100">
                             <i class="fa-solid fa-trash hover:text-gray-700"></i>
-                          </a>
+                          </button>
+
                         </td>
                     </tr>
                     @endforeach
                   @endif
                 </tbody>
-                <button  @click = "open = !open" :class = "open && 'hidden'" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add assignment</button>
-                <button @click = "open = !open" x-show = "open"  class = "ml-8 flex justify-center items-center rounded-full w-10 h-10 hover:bg-gray-200 active:border-2 active:border-gray-100 transition-all"><i class="fa-solid fa-arrow-left"></i></button>
-                </button>
             </table>
 
             {{-- form to upload assignment --}}
@@ -136,31 +158,31 @@
             enctype="multipart/form-data"
             >
               @csrf
-              @if(Session::has('message'))
-                <div>
-                  {{Session::get('message')}}
-                </div>
-              @endif
               <div>
                   <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
                   <input name = "title" type="text" id="title" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
                   @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
+
               <div>
                   <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
                   <textarea name = "description" id="description" class="editor"></textarea>
                   @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
+
               <div>
                   <label for="due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
-                  <input name = "due_date" type = "date" id="due_date" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  <input name = "due_date" type = "date" id="due_date" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100"
+                  >
                   @error('due_date') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
+
               <div>
-                  <label for="due_time" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
+                  <label for="due_time" class="block text-gray-700 text-sm font-bold mb-2">Due Time</label>
                   <input name = "due_time" type = "time" id="due_time" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
                   @error('due_time') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
+
               <div>
                   <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Content</label>
                   <textarea name = "content" id="editor" class="editor"></textarea>
@@ -172,8 +194,70 @@
                   <input name = "file" type = "file" id="file" class = "appearance-none bg-gray-100 cursor-pointer rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
                   @error('file') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
-              <button type="submit" class="bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">Upload</button>
+
+              <button type="submit" class="bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">
+                Upload
+              </button>
             </form>
+
+              {{-- form to update assignments --}}
+            @foreach($assignments as $assignment)
+            <form 
+            x-show = "edit && !open"
+            action = "/lecturer/assignment/upload/{{$module->module_code}}" 
+            method = "POST" 
+            class = "p-8" 
+            enctype="multipart/form-data"
+            >
+              @csrf
+              
+              <div>
+                  <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+                  <input 
+                  name = "title" 
+                  type="text" 
+                  id="title" 
+                  value = "{{$assignment->assignment_title}}"
+                  class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100"
+                  >
+                  @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
+              </div>
+
+              <div>
+                  <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                  <textarea name = "description" id="description" class="editor"></textarea>
+                  @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
+              </div>
+
+              <div>
+                  <label for="due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
+                  <input name = "due_date" type = "date" id="due_date" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  @error('due_date') <span class="text-red-500">{{ $message }}</span> @enderror
+              </div>
+
+              <div>
+                  <label for="due_time" class="block text-gray-700 text-sm font-bold mb-2">Due Time</label>
+                  <input name = "due_time" type = "time" id="due_time" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  @error('due_time') <span class="text-red-500">{{ $message }}</span> @enderror
+              </div>
+
+              <div>
+                  <label for="content" class="block text-gray-700 text-sm font-bold mb-2">Content</label>
+                  <textarea name = "content" id="editor" class="editor"></textarea>
+                  @error('content') <span class="text-red-500">{{ $message }}</span> @enderror
+              </div>
+      
+              <div>
+                  <label class="block text-gray-700 text-sm font-bold mb-2">File</label>
+                  <input name = "file" type = "file" id="file" class = "appearance-none bg-gray-100 cursor-pointer rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  @error('file') <span class="text-red-500">{{ $message }}</span> @enderror
+              </div>
+
+              <button type="submit" class="bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">
+                Upload
+              </button>
+            </form>
+            @endforeach
         </div>
 
         
@@ -189,19 +273,27 @@
             <thead class = "border-b font-medium text-left">
                 <th scope="col" class="px-6 py-4">Title</th>
                 <th scope="col" class="px-6 py-4">date uploaded</th>
+                <th scope="col" class="px-6 py-4 text-center">action</th>
             </thead>
             <tbody>
               @foreach($notes as $note)
                 <tr class = "border-b transition duration-300 ease-in-out hover:bg-neutral-100 cursor-pointer">
                     <td class="whitespace-nowrap px-6 py-4">{{$note->title}}</td>
                     <td class="whitespace-nowrap px-6 py-4">{{$note->created_at}}</td>
+                    <td class="whitespace-nowrap px-6 py-4 flex justify-evenly items-center">
+                      <a href="" class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer">
+                        <i class="fa-solid fa-pencil hover:text-gray-700"></i>
+                      </a>
+                      <a href="" class = "flex items-center justify-center w-8 h-8 rounded-full transition duration-300 ease-in-out hover:bg-neutral-200 cursor-pointer">
+                        <i class="fa-solid fa-trash hover:text-gray-700"></i>
+                      </a>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
             <button :class = "openNoteForm && 'hidden' " @click = "openNoteForm = !openNoteForm" class = "bg-gray-400 px-4 py-2 rounded text-white m-3 hover:bg-gray-500 transition all">add notes</button>
             <button @click = "openNoteForm = !openNoteForm" x-show = "openNoteForm"  class = "flex justify-center items-center rounded-full w-10 h-10 hover:bg-gray-200 active:border-2 active:border-gray-100 transition-all"><i class="fa-solid fa-arrow-left"></i></button>
           </table>
-          <div>{{$notes->links('vendor.pagination.tailwind')}}</div>
           
           {{-- form to upload notes --}}
           <form 

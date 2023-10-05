@@ -33,7 +33,11 @@
                        </div>
                     </div>
                 </a>
-            @endforeach 
+            @endforeach
+            @else
+            <div class="flex w-full h-full justify-center items-center font-md">
+                No modules added yet
+            </div> 
         @endif
     </section>
     @endsection

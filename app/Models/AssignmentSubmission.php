@@ -14,4 +14,8 @@ class AssignmentSubmission extends Model
         'student_id',
         'answers'
     ];
+
+    public function assignmentGrade(){
+        return $this->hasOne(AssignmentGrade::class);
+    }
 }

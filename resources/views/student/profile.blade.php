@@ -9,7 +9,15 @@
 <body>
    @extends('layout.studentLayout')
    @section('content')
-    <section class = "w-full flex justify-center items-center">
+    <section class = "relative w-full flex justify-center items-center">
+
+        @if(Session::has('status'))
+        <div id = "alertBox" class="absolute top-0 drop-shadow-lg w-64 h-10 flex justify-center items-center gap-2 bg-white text-green-500 text-center rounded">
+            <i class="fa-solid fa-circle-check"></i>
+            {{Session::get('status')}}
+        </div>
+        @endif
+
         <div class = "flex w-96 h-96 mt-20 p-5 gap-10 items-center flex-col shadow-md rounded">
             <div class = "flex flex-1">
                 <a href="/student/update/image/{{auth('student')->user()->regno}}">
@@ -52,11 +60,13 @@
             </div>            
         </div>
     </section>
-    @if(Session::has('status'))
     <script>
-        alert("password changed successfully");
+        // Javascript code to handle the alert
+        document.getElementById("alertBox").style.display = "flex";
+        setTimeout(() => {
+            document.getElementById("alertBox").style.display = "none";
+        }, 3000);
     </script>
-    @endif
     @endsection('content')
 </body>
 </html>

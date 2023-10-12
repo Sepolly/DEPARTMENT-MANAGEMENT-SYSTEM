@@ -21,10 +21,10 @@
 
             @endif
             <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="uname">
-              Username
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+              email
             </label>
-            <input value = "{{old('username')}}" name = "username" class="appearance-none bg-gray-100 rounded w-full h-12 py-2 px-3 text-gray-700 leading-tight focus:outline-blue-100" id="uname" type="text" placeholder="username" autocomplete="off" autofocus>
+            <input value = "{{old('email')}}" name = "email" class="appearance-none bg-gray-100 rounded w-full h-12 py-2 px-3 text-gray-700 leading-tight focus:outline-blue-100" id="email" type="email" placeholder="email" autofocus>
             @if($errors)
                 @error('username')
                 <p class = "text-red-400">

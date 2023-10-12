@@ -47,7 +47,7 @@
             x-transition
             class="flex justify-evenly items-center w-32 h-14 bg-white rounded">
                 <a href="" class = "text-center leading-10 hover:opacity-70 h-10 transition-all">Profile</a>
-                <a href="" class = "text-center leading-10 hover:opacity-70 h-10 transition-all">Logout</a>
+                <a href="/admin/logout" class = "text-center leading-10 hover:opacity-70 h-10 transition-all">Logout</a>
             </div>
         </div>
     </nav>

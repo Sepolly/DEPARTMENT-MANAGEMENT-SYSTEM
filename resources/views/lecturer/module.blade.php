@@ -160,7 +160,7 @@
               @csrf
               <div>
                   <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
-                  <input name = "title" type="text" id="title" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  <input name = "title" type="text" id="title" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100" required>
                   @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
 
@@ -173,13 +173,13 @@
               <div>
                   <label for="due_date" class="block text-gray-700 text-sm font-bold mb-2">Due Date</label>
                   <input name = "due_date" type = "date" id="due_date" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100"
-                  >
+                  required>
                   @error('due_date') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
 
               <div>
                   <label for="due_time" class="block text-gray-700 text-sm font-bold mb-2">Due Time</label>
-                  <input name = "due_time" type = "time" id="due_time" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                  <input name = "due_time" type = "time" id="due_time" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100" required>
                   @error('due_time') <span class="text-red-500">{{ $message }}</span> @enderror
               </div>
 

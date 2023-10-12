@@ -40,7 +40,7 @@
         {{-- DESCRIPTION --}}
         <div class="text-center">
             <h1 class = "mt-20 text-white font-bold text-5xl">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias, quo?
+                WELCOME, TO THE ELECTRICAL AND ELECTRONICS DEPARTMENT OF THE FOURAH BAY COLLEDGE
             </h1>
             <p class = "font-light m-2 text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor illo, inventore sint ratione enim ipsam magni aspernatur nobis iste, laborum esse dolores nemo? Recusandae dolorum cupiditate sapiente fugiat iure error magnam deleniti suscipit cum consequuntur exercitationem illo accusantium animi voluptas, quis aliquid, nesciunt voluptatum provident, eius eos quibusdam voluptates! Pariatur.</p>
         </div>

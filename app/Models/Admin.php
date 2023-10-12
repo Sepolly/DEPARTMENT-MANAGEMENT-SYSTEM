@@ -10,10 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 class Admin extends Model implements Authenticatable 
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $guard = 'admin';
+
     protected $fillable = [
         'id',
-        'username',
         'email',
         'password',
         'usertype'
@@ -25,7 +24,7 @@ class Admin extends Model implements Authenticatable
     
     public function getAuthIdentifierName()
     {
-        return 'id'; // Change this to the appropriate identifier field in your database
+        return 'id';
     }
 
     public function getAuthIdentifier()

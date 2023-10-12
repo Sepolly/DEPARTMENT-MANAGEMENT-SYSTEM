@@ -22,15 +22,7 @@ class AdminController extends Controller
         return view('admin.dashboard',['students'=>$students,'lecturers'=>$lecturers,'modules'=>$modules]);
     }
     
-    // // fxn to send mail
-    // public function sendStudentLoginMail(String $email){
-
-    // }
-
-    // // fxn to check there's there's internet connectivity
-    // public function isOnline($site = "https://www.google.com"){
-    //     return @fopen($site,'r') ? true : false;
-    // }
+    
 
     public function addStudent(Request $request){
         $fields = $request->validate([
@@ -140,10 +132,10 @@ class AdminController extends Controller
     // admin login function
    public function login(Request $request){
        $fields = $request->validate([
-           'username'=>'required',
+           'email'=>'required|email',
            'password'=>'required'
         ]);
-        
+        dd($fields);
         if(auth('admin')->attempt($fields)){
             return redirect('/admin');
         }
@@ -166,11 +158,15 @@ class AdminController extends Controller
     $lecturer->update($fields);
     $admin = [
         'id'=>$fields['lecturer_id'],
-        'username'=>'admin',
         'email'=>$lecturer['email'],
-        'password'=>bcrypt('password')
+        'password'=>bcrypt('fbceeng@admin')
     ];
     Admin::create($admin);
     return back()->with('success',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is now an admin');
+   }
+
+   public function logout(){
+    auth('admin')->logout();
+    return redirect('/admin/login');
    }
 }

@@ -29,11 +29,12 @@ Route::get('/',fn()=>view('home'));
 // ADMIN ROUTES
 Route::get('/admin/login', [AdminController::class,'showLogin']);
 Route::post('/admin/login',[AdminController::class,'login']);
-Route::get('/admin', [AdminController::class,'dashboard']);
+
 
 Route::prefix('admin')->group(function(){
-    
+    Route::get('/', [AdminController::class,'dashboard']);
     Route::get('/makeadmin',[AdminController::class,'showMakeAdmin']);
+    Route::get('/logout',[AdminController::class,'logout']);
     
     Route::get('/addStudent', function(){
         return view('admin.addStudent');

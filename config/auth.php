@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'admin',
         'passwords' => 'admin',
     ],
 
@@ -115,6 +115,18 @@ return [
         ],
         'lecturer' => [
             'provider' => 'lecturers',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'admin' => [
+            'provider' => 'admins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'user' => [
+            'provider' => 'users',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

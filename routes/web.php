@@ -32,13 +32,11 @@ Route::post('/admin/login',[AdminController::class,'login']);
 
 
 Route::prefix('admin')->group(function(){
-    Route::get('/', [AdminController::class,'dashboard']);
+    Route::get('/', [AdminController::class,'dashboard'])->name('admin');
     Route::get('/makeadmin',[AdminController::class,'showMakeAdmin']);
     Route::get('/logout',[AdminController::class,'logout']);
     
-    Route::get('/addStudent', function(){
-        return view('admin.addStudent');
-    });
+    Route::get('/addStudent', [AdminController::class,'showAddStudent']);
     Route::get('/addModule', function(){
         $lecturers = Lecturer::all();
         return view('admin.addModule',['lecturers' => $lecturers]);
@@ -102,5 +100,6 @@ Route::middleware(['student'])->prefix('student')->group(function(){
     Route::post('/update/image/{regno}',[StudentController::class,'updateImage']);
     
 });
+
 
 

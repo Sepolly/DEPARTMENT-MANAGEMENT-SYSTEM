@@ -1,30 +1,25 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class Admin extends Model implements Authenticatable 
+class Admin extends Model implements Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'email',
-        'password',
-        'usertype'
-    ];
+    protected $fillable = ['id','email','password'];
 
-    protected $hidden = [
-        'password'
-    ];
-    
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+
     public function getAuthIdentifierName()
     {
-        return 'id';
+        return 'id'; // Change this to the appropriate identifier field in your database
     }
 
     public function getAuthIdentifier()

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{asset('fontawesome/fontawesome-free-6.4.0-web/css/all.min.css')}}">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.0/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.0/dist/cdn.min.js"></script>
     <title>EENG</title>
 </head>
 <body x-data = "{open: false}" style = "background-image: url('{{asset('images/university.jpg')}}')" class = "bg-gradient-to-r from-gray-700 to-black via-transparent bg-center bg-cover bg-fixed">

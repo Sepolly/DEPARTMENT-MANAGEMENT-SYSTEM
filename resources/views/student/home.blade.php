@@ -1,5 +1,4 @@
 
-    @auth('student')
     {{-- Navigation bar and footer layout --}}
     @extends('layout.studentLayout')
 
@@ -42,4 +41,3 @@
     </section>
     @endsection
     
-    @endauth

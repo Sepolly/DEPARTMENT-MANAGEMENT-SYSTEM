@@ -11,7 +11,8 @@ class StudentObserver
      * Handle the Student "created" event.
      */
     public function created(Student $student): void
-    {
+    {   
+        
        $student->notify(new StudentLoginEmail($student));
     }
 

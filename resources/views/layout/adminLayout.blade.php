@@ -7,7 +7,7 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{asset('fontawesome/fontawesome-free-6.4.0-web/css/all.min.css')}}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.0/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.0/dist/cdn.min.js"></script>
     <title>Admin</title>
 </head>
 <body x-data = "{toggle: false}" class = "relative">
@@ -67,8 +67,8 @@
             <button
             @click = "toggle = !toggle" 
             :class="toggle ? 
-            'absolute -right-4 flex justify-center items-center w-6 h-6 rounded-full drop-shadow bg-gray-50 transition-all duration-300' : 
-            'absolute -right-4 flex justify-center items-center w-6 h-6 rounded-full drop-shadow bg-gray-50 hover:bg-gray-50 transition-all duration-300' ">
+            'z-50 absolute -right-4 flex justify-center items-center w-6 h-6 rounded-full drop-shadow bg-gray-50 transition-all duration-300' : 
+            'z-50 absolute -right-4 flex justify-center items-center w-6 h-6 rounded-full drop-shadow bg-gray-50 hover:bg-gray-50 transition-all duration-300' ">
                 <i class="fa-solid fa-chevron-right text-sm cursor-pointer font-light text-green-500"></i>
             </button>
         </div>

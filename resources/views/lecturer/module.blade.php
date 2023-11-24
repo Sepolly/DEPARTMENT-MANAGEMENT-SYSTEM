@@ -307,13 +307,13 @@
             @csrf
             <div class="mb-4">
                 <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
-                <input name = "title" type="text" id="title" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                <input name = "title" type="text" id="title" class="appearance-none bg-gray-100 rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100" required>
                 @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
     
             <div class="mb-4">
                 <label for="file" class="block text-gray-700 text-sm font-bold mb-2">File</label>
-                <input name = "file" type = "file" id="file" class = "appearance-none bg-gray-100 cursor-pointer rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100">
+                <input name = "file" type = "file" id="file" class = "appearance-none bg-gray-100 cursor-pointer rounded w-full h-10 py-2 px-3 text-gray-700 leading-tight focus:outline-green-100" required>
                 @error('file') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 

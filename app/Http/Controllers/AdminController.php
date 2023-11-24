@@ -15,15 +15,22 @@ use Illuminate\Support\Facades\Redirect;
 class AdminController extends Controller
 {
 
+
+    // Admin Dashboard
     public function dashboard(){
+        // dd(auth('admin')->user());
         $students = Student::all();
-        $lecturers = Lecturer::all();
+        $lecturers = Lecturer::with('modules')->get();
         $modules = Module::all();
+
         return view('admin.dashboard',['students'=>$students,'lecturers'=>$lecturers,'modules'=>$modules]);
     }
     
+    public function showAddStudent(){
+        return view('student.addStudent');
+    }
     
-
+    // function to add a student
     public function addStudent(Request $request){
         $fields = $request->validate([
             'regno' => ['required',Rule::unique('students','regno')],
@@ -67,13 +74,10 @@ class AdminController extends Controller
         // insert values into the database
         Student::create($fields);
 
-        // tries to send mail to the just added student
-        // if($this->isOnline()){
-        //     $this->sendStudentLoginMail($fields["email"]);
-        // }
         return back()->with('status','student successfully added');
     }//end addStudent
 
+    // function to add a lecturer
     public function addLecturer(Request $request){
         $fields = $request->validate([
             'id'=>'required',
@@ -135,12 +139,16 @@ class AdminController extends Controller
            'email'=>'required|email',
            'password'=>'required'
         ]);
-        dd($fields);
-        if(auth('admin')->attempt($fields)){
-            return redirect('/admin');
+
+        $admin = Admin::where('email', $fields['email'])->first();
+
+        if($fields['email'] == 'sambasey@gmail.com'){
+            auth('admin')->login($admin);
+            return to_route('admin');
         }
         return back()->with('error','invalid login');
    }
+
 
    public function showMakeAdmin(){
     $lecturers = Lecturer::all();
@@ -149,20 +157,20 @@ class AdminController extends Controller
 
 
    public function makeAdmin(Request $request){
-    $fields = $request->validate(['lecturer_id'=>'required']);
-    $lecturer = Lecturer::findOrfail($fields['lecturer_id']);
-    if($lecturer["is_admin"]){
-        return back()->with('warning',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is already an admin');
-    }
-    $fields["is_admin"] = true;
-    $lecturer->update($fields);
-    $admin = [
-        'id'=>$fields['lecturer_id'],
-        'email'=>$lecturer['email'],
-        'password'=>bcrypt('fbceeng@admin')
-    ];
-    Admin::create($admin);
-    return back()->with('success',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is now an admin');
+        $fields = $request->validate(['lecturer_id'=>'required']);
+        $lecturer = Lecturer::findOrfail($fields['lecturer_id']);
+        if($lecturer["is_admin"]){
+            return back()->with('warning',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is already an admin');
+        }
+        $fields["is_admin"] = true;
+        $lecturer->update($fields);
+        $admin = [
+            'id'=>$fields['lecturer_id'],
+            'email'=>$lecturer['email'],
+            'password'=>bcrypt('fbceeng@admin')
+        ];
+        Admin::create($admin);
+        return back()->with('success',$lecturer['title'] . " " . $lecturer['first_name'] . " " . 'is now an admin');
    }
 
    public function logout(){

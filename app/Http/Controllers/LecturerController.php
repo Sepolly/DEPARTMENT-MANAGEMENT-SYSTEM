@@ -75,7 +75,7 @@ class LecturerController extends Controller
         $assignment->assignment_description = $request->description;
         $assignment->assignment_due_date = $request->due_date;
         $assignment->assignment_due_time = $request->due_time;
-        $assignment->assignment_content = $request->content;
+        $request->content??$assignment->assignment_content = $request->content;
         $assignment->module_code = $module_code;
         $assignment->assignment_file = $file;
         $assignment->signed_by = auth('lecturer')->user()->id;

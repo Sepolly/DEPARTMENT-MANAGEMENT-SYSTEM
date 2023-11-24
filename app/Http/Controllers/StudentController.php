@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assignment;
-use App\Models\Student;
-use App\Models\Module;
-use App\Models\Lecturer;
 use App\Models\Note;
+use App\Models\Module;
+use App\Models\Student;
+use App\Models\Lecturer;
+use App\Models\Assignment;
+use function Livewire\store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\File;
 
 class StudentController extends Controller
 {
@@ -66,14 +66,15 @@ class StudentController extends Controller
 
 
     public function updateImage(Request $request, $regno){
+        // dd(Storage::disk('public')->get('images/profile/profile-default.png'));
         $fields = $request->validate([
             'image'=>'required|image|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
         
         $student = Student::findOrfail($regno);
         $image = time().".".$request->image->extension();
-        // $request->image->move(public_path('images/profile'), $image);
         $request->image->move(public_path('images/profile'), $image);
+        
         $fields['image'] = $image;
         $student->update($fields);
 
@@ -88,11 +89,15 @@ class StudentController extends Controller
     
         // Check if the image path exists and if the file exists in storage
         if ($student->image) {
-            $imagePath = '/images/profile/'. $student->image;
-            dd($imagePath);
-            $student->image = null;
-            $student->save();
-            return redirect('/student/profile/'.$regno);
+            $imagePath = public_path('/images/profile/'. $student->image);
+            
+            if(File::exists($imagePath)){
+                File::delete($imagePath);
+                $student->image = null;
+                $student->save();
+                return redirect('/student/profile/'.$regno);
+            }
+            dd("could not delete");
         }
     
         // Clear the image attribute in the student model

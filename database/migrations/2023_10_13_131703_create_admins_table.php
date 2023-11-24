@@ -15,9 +15,8 @@ return new class extends Migration
             $table->string('id');
             $table->string('email');
             $table->string('password');
-            $table->string('usertype')->default('admin');
+            $table->string('user_type')->default('admin');
             $table->timestamps();
-            $table->remembertoken();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin');
+        Schema::dropIfExists('admins');
     }
 };
